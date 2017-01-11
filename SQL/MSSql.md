@@ -283,9 +283,8 @@ END
 用法：exec sp_lock_table
 ```
 
-13. 查询执行慢的SQL 
+13.查询执行慢的SQL 
 ##
-
 ```
 SELECT
 (total_elapsed_time / execution_count)/1000 N'平均时间ms'
