@@ -3,7 +3,7 @@
 
 1、获取表字段描述
 ##
-```
+```SQL
 select t.name, c.name, ep.value  from sys.tables t
 INNER JOIN sys.columns c ON t.object_id = c.object_id
 LEFT JOIN sys.extended_properties ep ON ep.major_id = c.object_id AND ep.minor_id = c.column_id 
@@ -12,13 +12,13 @@ WHERE ep.class =1 AND t.name='TABLENAME'
 
 2、获取表字段信息
 ##
-```
+```SQL
 sp_columns TABLENAME
 ```
 
 3、添加描述
 ##
-```
+```SQL
 EXEC sp_addextendedproperty 
 'MS_Description','description_string',
 'user',dbo,
@@ -28,7 +28,7 @@ EXEC sp_addextendedproperty
 
 4.生成实体类
 ##
-```
+```SQL
 
 select 
 '///<summary>'+char(13)+ 
@@ -60,12 +60,12 @@ WHERE ep.class =1 AND t.name='TABLENAME'
 ```
 5.服务器获取所有数据库名
 ##
-```
+```SQL
 SELECT * FROM Master..SysDatabases ORDER BY Name
 ```
 6.根据数据库获取所有表
 ##
-```
+```SQL
 SELECT * FROM DatabaseName..SysObjects Where XType='U' ORDER BY Name
  
 XType='U':表示所有用户表;
@@ -73,18 +73,18 @@ XType='S':表示所有系统表;
 ```
 7.根据表获取所有字段
 ##
-```
+```SQL
 SELECT * FROM SysColumns WHERE id=Object_Id('TableName')
 ```
 8.获取所有系统类型
 ##
-```
+```SQL
 select * from sys.types
 ```
 9.跨数据库查询
 ##
-```
-第一种
+```SQL
+--第一种
 
 --开启
 exec sp_configure 'show advanced options',1
@@ -99,7 +99,7 @@ reconfigure
 exec sp_configure 'show advanced options',0
 reconfigure 
 
-第二种
+--第二种
 
 -- 创建链接服务器
 exec sp_addlinkedserver 'svr_link','','sqloledb','192.168.1.1'
@@ -223,7 +223,7 @@ as
 12.查询死锁表信息（放在master数据库中）
 ##
 
-```
+```SQL
 USE [master]
 GO
 /****** Object:  StoredProcedure [dbo].[sp_lock_table]    Script Date: 2017/1/11 16:02:01 ******/
@@ -285,7 +285,7 @@ END
 
 13.查询执行慢的SQL 
 ##
-```
+```SQL
 SELECT
 (total_elapsed_time / execution_count)/1000 N'平均时间ms'
 ,total_elapsed_time/1000 N'总花费时间ms'
@@ -312,4 +312,26 @@ ELSE qs.statement_end_offset END
 - qs.statement_start_offset)/2) + 1) not like '%fetch%'
 ORDER BY
 total_elapsed_time / execution_count DESC;
+```
+
+14.查询执行过的SQL计划
+##
+```SQL
+SELECT TOP 1000 
+    QS.creation_time,
+    SUBSTRING(ST.text,(QS.statement_start_offset/2)+1,
+    ((CASE QS.statement_end_offset WHEN -1 THEN DATALENGTH(st.text) 
+        ELSE QS.statement_end_offset END - QS.statement_start_offset)/2) + 1
+    ) AS statement_text,
+    ST.text,
+    QS.total_worker_time,
+    QS.last_worker_time,
+    QS.max_worker_time,
+    QS.min_worker_time
+FROM 
+    sys.dm_exec_query_stats QS
+CROSS APPLY 
+    sys.dm_exec_sql_text(QS.sql_handle) ST
+WHERE QS.creation_time BETWEEN '2018-05-22 15:00:00' AND '2018-05-22 15:10:00'
+ORDER BY QS.creation_time DESC
 ```
