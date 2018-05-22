@@ -114,7 +114,7 @@ exec sp_dropserver 'svr_link','droplogins'
 10.获取数据库死锁(放在master数据库中)
 ##
 
-```
+```SQL
 USE [master]
 GO
 /****** Object:  StoredProcedure [dbo].[sp_who_lock]    Script Date: 2017/1/11 15:50:41 ******/
@@ -185,7 +185,7 @@ end
 11.杀掉死锁进程（放在master数据库中）
 ##
 
-```
+```SQL
 USE [master]
 GO
 /****** Object:  StoredProcedure [dbo].[p_killspid]    Script Date: 2017/1/11 15:59:36 ******/
