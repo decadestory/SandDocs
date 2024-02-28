@@ -103,26 +103,8 @@ h2 {
     font-size: 1.75em;
     line-height: 1.225;
     color: #1c8d6c;
-    border-bottom: 1px solid #eee;
     padding-bottom: 15px 
 }
-
-/*@media print {
-    .typora-export h1,
-    .typora-export h2 {
-        border-bottom: none;
-        padding-bottom: initial;
-    }
-
-    .typora-export h1::after,
-    .typora-export h2::after {
-        content: "";
-        display: block;
-        height: 100px;
-        margin-top: -96px;
-        border-top: 1px solid #eee;
-    }
-}*/
 
 h3 {
     font-size: 1.5em;
