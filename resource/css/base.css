@@ -1,0 +1,101 @@
+html,
+body {
+    padding: 0;
+    margin: 0;
+}
+
+.markdow {
+    display: flex;
+}
+
+.markdow-list {
+    width: 250px;
+    height: 100%;
+    background: rgb(36, 34, 34);
+    color: #fff;
+    position: absolute;
+    bottom: auto;
+    overflow-y: auto;
+}
+
+.markdow-container {
+    margin: 0 auto;
+    padding: 20px;
+    position: absolute;
+    bottom: 0;
+    top: 0;
+    left: 250px;
+    right: 0;
+    overflow-y: auto;
+}
+
+.logo {
+    font-size: 36px;
+    padding: 10px;
+    width: 120px;
+    height: 120px;
+    border-radius: 85px;
+    display: block;
+    margin: 0 auto;
+}
+
+.header {
+    padding: 10px 0;
+    border-bottom: 1px solid #2d2b2b;
+}
+
+.header div {
+    text-align: center;
+    font-size: 14px;
+    text-decoration: none;
+}
+
+.header div a {
+    text-decoration: none;
+}
+
+.type {
+    margin-top: 20px;
+}
+
+.type ul {
+    list-style-type: none;
+    padding-left: 0;
+    width: 75%;
+    margin: 0 auto;
+}
+
+.type ul li {
+    padding: 10px;
+    text-align: center;
+    border-bottom: 1px solid #3b3b3b;
+}
+
+.type ul li a {
+    text-decoration: none;
+    color: #fff;
+}
+
+.type ul li [active] {
+    color: burlywood;
+}
+
+
+.list-item{
+    margin-bottom: 20px;
+    background: #eee;
+    padding: 10px;
+}
+
+.list-title{
+    font-size: 1.5em;
+    line-height: 1.43;
+    color: #3d8e86;
+    padding:10px;
+}
+
+.list-desc{
+    font-size:14px;
+    color:#666;
+    padding:0 10px;
+}

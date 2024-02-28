@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HISTORY/Windows下visual studio code搭建golang开发环境</title>
+    <link rel="stylesheet" href="../../resource/theme/yuan-shan.css">
+    <link rel="stylesheet" href="../../resource/css/base.css">
+</head>
+<body>
+    <div class="markdow">
+        <div class="markdow-list">
+             <div class="header">
+                <img class="logo" src="../../resource/image/logo.jpg"/>
+                <div>JERRY♎<a href="https://github.com/decadestory" target="_blank" >GITHUB</a></div>
+            </div>
+            <div class="type">
+                <ul>
+                    <li><a href="../../docs_cate/GO开发.html">GO开发</a></li><li><a href="../../docs_cate/HISTORY.html">HISTORY</a></li><li><a href="../../docs_cate/JAVA文章.html">JAVA文章</a></li><li><a href="../../docs_cate/RUST.html">RUST</a></li><li><a href="../../docs_cate/SandDocs.html">SandDocs</a></li><li><a href="../../docs_cate/关于JERRY.html">关于JERRY</a></li><li><a href="../../docs_cate/前端相关.html">前端相关</a></li><li><a href="../../docs_cate/数据库.html">数据库</a></li><li><a href="../../docs_cate/笔记本.html">笔记本</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="markdow-container">
+            <h1>Windows下visual studio code搭建golang开发环境</h1>
+<h2>序幕</h2>
+<p>其实环境搭建没什么难的，但是遇到一些问题，主要是有些网站资源访问不了(如：golang.org)，
+导致一些包无法安装，最终会导致环境搭建失败，跟据这个教程几步，我们将可以快速的构建golang的开发环境。</p>
+<h3>开发环境：</h3>
+<p><img src="http://images.cnblogs.com/cnblogs_com/JerryNo1/818380/o_QQ%e6%88%aa%e5%9b%be20160420134611.jpg" alt="image"></p>
+<h2>一、安装</h2>
+<p>这里我用需要安装一些工具：</p>
+<p>1.<a href="https://www.visualstudio.com/products/code-vs">Visual Studio Code 1.0.0</a></p>
+<p>2.<a href="http://www.golangtc.com/download">Golang下载</a></p>
+<pre><code>这里我使用的是Go1.6.
+</code></pre>
+<p>3.<a href="https://git-scm.com/download/">git下载</a></p>
+<pre><code>这一步跟建环境没什么关系，
+但是之后要引用一些包需要它.
+</code></pre>
+<p>4.<a href="https://marketplace.visualstudio.com/items?itemName=lukehoban.Go">安装vscode-go 插件</a></p>
+<p><img src="http://images.cnblogs.com/cnblogs_com/JerryNo1/818380/o_QQ%e6%88%aa%e5%9b%be20160420141250.jpg" alt="image"></p>
+<pre><code>安装方法:打开vscode 按F1 然后选择安装扩展 选择go 下载后 重启
+</code></pre>
+<p><img src="http://images.cnblogs.com/cnblogs_com/JerryNo1/818380/o_QQ%e6%88%aa%e5%9b%be20160420141705.jpg" alt="image"></p>
+<p>5.<a href="http://pan.baidu.com/s/1qY7pRa8">下载vscode扩展依赖工具</a></p>
+<pre><code>vscode-go 插件需要一些工具，这些功具默认需要这样安装：
+
+go get -u -v github.com/nsf/gocode
+go get -u -v github.com/rogpeppe/godef
+go get -u -v github.com/golang/lint/golint
+go get -u -v github.com/lukehoban/go-outline
+go get -u -v sourcegraph.com/sqs/goreturns
+go get -u -v golang.org/x/tools/cmd/gorename
+go get -u -v github.com/tpng/gopkgs
+go get -u -v github.com/newhook/go-symbols
+go get -u -v golang.org/x/tools/cmd/guru
+(以及dlv调试运行工具)
+
+这些内容最终目的是要在gopath中bin文件夹中生成一些exe文件。
+但是，这里安装时遇到了一些问题，有一些会安装失败，报错信息主要意思是说无法链接啊，无法找到啊之类的。
+这里我省略这些步骤。直接下载我已经生成的exe包，放在gopath的bin文件夹中就行了。如下图：
+</code></pre>
+<p><img src="http://images.cnblogs.com/cnblogs_com/JerryNo1/818380/o_QQ%e6%88%aa%e5%9b%be20160420142649.jpg" alt="image"></p>
+<h2>二、配置</h2>
+<p>1.GOPATH：这个是你的工作目录，请在系统新加一个GOPATH指定你的工作目录,并且在工作目录中新建
+bin,pkg,src三个文件夹。</p>
+<p>2.Git：将git安装目录下的bin目录加入Path环境变量。</p>
+<p>3.用vscode打开src文件夹添加两个文件如下：
+<img src="http://images.cnblogs.com/cnblogs_com/JerryNo1/818380/o_QQ%e6%88%aa%e5%9b%be20160420143835.jpg" alt="image"></p>
+<pre><code>{
+    &quot;files.autoSave&quot;: &quot;onFocusChange&quot;,
+    &quot;go.buildOnSave&quot;: true,
+    &quot;go.lintOnSave&quot;: true,
+    &quot;go.vetOnSave&quot;: true,
+    &quot;go.buildTags&quot;: &quot;&quot;,
+    &quot;go.buildFlags&quot;: [],
+    &quot;go.lintFlags&quot;: [],
+    &quot;go.vetFlags&quot;: [],
+    &quot;go.coverOnSave&quot;: false,
+    &quot;go.useCodeSnippetsOnFunctionSuggest&quot;: false,
+    &quot;go.formatOnSave&quot;: true,
+    &quot;go.formatTool&quot;: &quot;goreturns&quot;,
+    &quot;go.goroot&quot;: &quot;C:\\Go&quot;,
+    &quot;go.gopath&quot;: &quot;H:\\Projects\\GitHub\\Go&quot;,
+    &quot;go.gocodeAutoBuild&quot;: true
+}
+</code></pre>
+<p><img src="http://images.cnblogs.com/cnblogs_com/JerryNo1/818380/o_QQ%e6%88%aa%e5%9b%be20160420144012.jpg" alt="image"></p>
+<pre><code>{
+	&quot;version&quot;: &quot;0.2.0&quot;,
+	&quot;configurations&quot;: [
+		{
+			&quot;name&quot;: &quot;Launch&quot;,
+			&quot;type&quot;: &quot;go&quot;,
+			&quot;request&quot;: &quot;launch&quot;,
+			&quot;mode&quot;: &quot;debug&quot;,
+			&quot;remotePath&quot;: &quot;&quot;,
+			&quot;port&quot;: 2345,
+			&quot;host&quot;: &quot;127.0.0.1&quot;,
+			&quot;program&quot;: &quot;${workspaceRoot}\\helloworld&quot;,
+			&quot;env&quot;: {},
+			&quot;args&quot;: []
+		}
+	]
+}
+</code></pre>
+<h2>三、演示</h2>
+<p>##运行
+<img src="http://images.cnblogs.com/cnblogs_com/JerryNo1/818380/o_QQ%e6%88%aa%e5%9b%be20160420151454.jpg" alt="image">
+##调试
+<img src="http://images.cnblogs.com/cnblogs_com/JerryNo1/818380/o_QQ%e6%88%aa%e5%9b%be20160420151303.jpg" alt="image"></p>
+<h1>四、总结</h1>
+<p>这些库因为不能获取，我在github上找了好久，最后编译成exe,国内找不到几篇文章提到这个问题，
+所以写个博客，让大家方便的开发。希望大家快乐的学习go语言。</p>
+
+        </div>   
+    </div>
+</body>
+</html>

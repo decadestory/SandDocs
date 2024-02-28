@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>笔记本/README</title>
+    <link rel="stylesheet" href="../../resource/theme/yuan-shan.css">
+    <link rel="stylesheet" href="../../resource/css/base.css">
+</head>
+<body>
+    <div class="markdow">
+        <div class="markdow-list">
+             <div class="header">
+                <img class="logo" src="../../resource/image/logo.jpg"/>
+                <div>JERRY♎<a href="https://github.com/decadestory" target="_blank" >GITHUB</a></div>
+            </div>
+            <div class="type">
+                <ul>
+                    <li><a href="../../docs_cate/GO开发.html">GO开发</a></li><li><a href="../../docs_cate/HISTORY.html">HISTORY</a></li><li><a href="../../docs_cate/JAVA文章.html">JAVA文章</a></li><li><a href="../../docs_cate/RUST.html">RUST</a></li><li><a href="../../docs_cate/SandDocs.html">SandDocs</a></li><li><a href="../../docs_cate/关于JERRY.html">关于JERRY</a></li><li><a href="../../docs_cate/前端相关.html">前端相关</a></li><li><a href="../../docs_cate/数据库.html">数据库</a></li><li><a href="../../docs_cate/笔记本.html">笔记本</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="markdow-container">
+            <h1>goldmark</h1>
+<p><a href="https://pkg.go.dev/github.com/yuin/goldmark"><img src="https://pkg.go.dev/badge/github.com/yuin/goldmark.svg" alt="https://pkg.go.dev/github.com/yuin/goldmark"></a>
+<a href="https://github.com/yuin/goldmark/actions?query=workflow:test"><img src="https://github.com/yuin/goldmark/workflows/test/badge.svg?branch=master&amp;event=push" alt="https://github.com/yuin/goldmark/actions?query=workflow:test"></a>
+<a href="https://coveralls.io/github/yuin/goldmark"><img src="https://coveralls.io/repos/github/yuin/goldmark/badge.svg?branch=master" alt="https://coveralls.io/github/yuin/goldmark"></a>
+<a href="https://goreportcard.com/report/github.com/yuin/goldmark"><img src="https://goreportcard.com/badge/github.com/yuin/goldmark" alt="https://goreportcard.com/report/github.com/yuin/goldmark"></a></p>
+<blockquote>
+<p>A Markdown parser written in Go. Easy to extend, standards-compliant, well-structured.</p>
+</blockquote>
+<p>goldmark is compliant with CommonMark 0.31.2.</p>
+<ul>
+<li><a href="https://yuin.github.io/goldmark/playground/">goldmark playground</a> : Try goldmark online. This playground is built with WASM(5-10MB).</li>
+</ul>
+<h2>Motivation</h2>
+<p>I needed a Markdown parser for Go that satisfies the following requirements:</p>
+<ul>
+<li>Easy to extend.
+<ul>
+<li>Markdown is poor in document expressions compared to other light markup languages such as reStructuredText.</li>
+<li>We have extensions to the Markdown syntax, e.g. PHP Markdown Extra, GitHub Flavored Markdown.</li>
+</ul>
+</li>
+<li>Standards-compliant.
+<ul>
+<li>Markdown has many dialects.</li>
+<li>GitHub-Flavored Markdown is widely used and is based upon CommonMark, effectively mooting the question of whether or not CommonMark is an ideal specification.
+<ul>
+<li>CommonMark is complicated and hard to implement.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Well-structured.
+<ul>
+<li>AST-based; preserves source position of nodes.</li>
+</ul>
+</li>
+<li>Written in pure Go.</li>
+</ul>
+<p><a href="https://gitlab.com/golang-commonmark/markdown">golang-commonmark</a> may be a good choice, but it seems to be a copy of <a href="https://github.com/markdown-it">markdown-it</a>.</p>
+<p><a href="https://github.com/russross/blackfriday/tree/v2">blackfriday.v2</a> is a fast and widely-used implementation, but is not CommonMark-compliant and cannot be extended from outside of the package, since its AST uses structs instead of interfaces.</p>
+<p>Furthermore, its behavior differs from other implementations in some cases, especially regarding lists: <a href="https://github.com/russross/blackfriday/issues/329">Deep nested lists don't output correctly #329</a>, <a href="https://github.com/russross/blackfriday/issues/244">List block cannot have a second line #244</a>, etc.</p>
+<p>This behavior sometimes causes problems. If you migrate your Markdown text from GitHub to blackfriday-based wikis, many lists will immediately be broken.</p>
+<p>As mentioned above, CommonMark is complicated and hard to implement, so Markdown parsers based on CommonMark are few and far between.</p>
+<h2>Features</h2>
+<ul>
+<li><strong>Standards-compliant.</strong>  goldmark is fully compliant with the latest <a href="https://commonmark.org/">CommonMark</a> specification.</li>
+<li><strong>Extensible.</strong>  Do you want to add a <code>@username</code> mention syntax to Markdown?
+You can easily do so in goldmark. You can add your AST nodes,
+parsers for block-level elements, parsers for inline-level elements,
+transformers for paragraphs, transformers for the whole AST structure, and
+renderers.</li>
+<li><strong>Performance.</strong>  goldmark's performance is on par with that of cmark,
+the CommonMark reference implementation written in C.</li>
+<li><strong>Robust.</strong>  goldmark is tested with <code>go test --fuzz</code>.</li>
+<li><strong>Built-in extensions.</strong>  goldmark ships with common extensions like tables, strikethrough,
+task lists, and definition lists.</li>
+<li><strong>Depends only on standard libraries.</strong></li>
+</ul>
+<h2>Installation</h2>
+<pre style="color:#2f1e2e;background-color:#e7e9db;"><code><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ go get github.com/yuin/goldmark
+</span></span></code></pre><h2>Usage</h2>
+<p>Import packages:</p>
+<pre style="color:#2f1e2e;background-color:#e7e9db;"><code><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#5bc4bf">import</span> (
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>    <span style="color:#48b685">&#34;bytes&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>    <span style="color:#48b685">&#34;github.com/yuin/goldmark&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>)
+</span></span></code></pre><p>Convert Markdown documents with the CommonMark-compliant mode:</p>
+<pre style="color:#2f1e2e;background-color:#e7e9db;"><code><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#815ba4">var</span> <span style="color:#06b6ef">buf</span> <span style="color:#06b6ef">bytes</span>.<span style="color:#06b6ef">Buffer</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span><span style="color:#815ba4">if</span> <span style="color:#06b6ef">err</span> <span style="color:#5bc4bf">:=</span> <span style="color:#06b6ef">goldmark</span>.<span style="color:#06b6ef">Convert</span>(<span style="color:#06b6ef">source</span>, <span style="color:#5bc4bf">&amp;</span><span style="color:#06b6ef">buf</span>); <span style="color:#06b6ef">err</span> <span style="color:#5bc4bf">!=</span> <span style="color:#815ba4">nil</span> {
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>  panic(<span style="color:#06b6ef">err</span>)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>}
+</span></span></code></pre><h2>With options</h2>
+<pre style="color:#2f1e2e;background-color:#e7e9db;"><code><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#815ba4">var</span> <span style="color:#06b6ef">buf</span> <span style="color:#06b6ef">bytes</span>.<span style="color:#06b6ef">Buffer</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span><span style="color:#815ba4">if</span> <span style="color:#06b6ef">err</span> <span style="color:#5bc4bf">:=</span> <span style="color:#06b6ef">goldmark</span>.<span style="color:#06b6ef">Convert</span>(<span style="color:#06b6ef">source</span>, <span style="color:#5bc4bf">&amp;</span><span style="color:#06b6ef">buf</span>, <span style="color:#06b6ef">parser</span>.<span style="color:#06b6ef">WithContext</span>(<span style="color:#06b6ef">ctx</span>)); <span style="color:#06b6ef">err</span> <span style="color:#5bc4bf">!=</span> <span style="color:#815ba4">nil</span> {
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>  panic(<span style="color:#06b6ef">err</span>)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>}
+</span></span></code></pre><table>
+<thead>
+<tr>
+<th>Functional option</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>parser.WithContext</code></td>
+<td>A <code>parser.Context</code></td>
+<td>Context for the parsing phase.</td>
+</tr>
+</tbody>
+</table>
+<h2>Context options</h2>
+<table>
+<thead>
+<tr>
+<th>Functional option</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>parser.WithIDs</code></td>
+<td>A <code>parser.IDs</code></td>
+<td><code>IDs</code> allows you to change logics that are related to element id(ex: Auto heading id generation).</td>
+</tr>
+</tbody>
+</table>
+<h2>Custom parser and renderer</h2>
+<pre style="color:#2f1e2e;background-color:#e7e9db;"><code><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#5bc4bf">import</span> (
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>    <span style="color:#48b685">&#34;bytes&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>    <span style="color:#48b685">&#34;github.com/yuin/goldmark&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>    <span style="color:#48b685">&#34;github.com/yuin/goldmark/extension&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>    <span style="color:#48b685">&#34;github.com/yuin/goldmark/parser&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>    <span style="color:#48b685">&#34;github.com/yuin/goldmark/renderer/html&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span><span style="color:#06b6ef">md</span> <span style="color:#5bc4bf">:=</span> <span style="color:#06b6ef">goldmark</span>.<span style="color:#06b6ef">New</span>(
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>          <span style="color:#06b6ef">goldmark</span>.<span style="color:#06b6ef">WithExtensions</span>(<span style="color:#06b6ef">extension</span>.<span style="color:#06b6ef">GFM</span>),
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>          <span style="color:#06b6ef">goldmark</span>.<span style="color:#06b6ef">WithParserOptions</span>(
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>              <span style="color:#06b6ef">parser</span>.<span style="color:#06b6ef">WithAutoHeadingID</span>(),
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>          ),
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>          <span style="color:#06b6ef">goldmark</span>.<span style="color:#06b6ef">WithRendererOptions</span>(
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>              <span style="color:#06b6ef">html</span>.<span style="color:#06b6ef">WithHardWraps</span>(),
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>              <span style="color:#06b6ef">html</span>.<span style="color:#06b6ef">WithXHTML</span>(),
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span>          ),
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span>      )
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span><span style="color:#815ba4">var</span> <span style="color:#06b6ef">buf</span> <span style="color:#06b6ef">bytes</span>.<span style="color:#06b6ef">Buffer</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span><span><span style="color:#815ba4">if</span> <span style="color:#06b6ef">err</span> <span style="color:#5bc4bf">:=</span> <span style="color:#06b6ef">md</span>.<span style="color:#06b6ef">Convert</span>(<span style="color:#06b6ef">source</span>, <span style="color:#5bc4bf">&amp;</span><span style="color:#06b6ef">buf</span>); <span style="color:#06b6ef">err</span> <span style="color:#5bc4bf">!=</span> <span style="color:#815ba4">nil</span> {
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span><span>    panic(<span style="color:#06b6ef">err</span>)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span><span>}
+</span></span></code></pre><table>
+<thead>
+<tr>
+<th>Functional option</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>goldmark.WithParser</code></td>
+<td><code>parser.Parser</code></td>
+<td>This option must be passed before <code>goldmark.WithParserOptions</code> and <code>goldmark.WithExtensions</code></td>
+</tr>
+<tr>
+<td><code>goldmark.WithRenderer</code></td>
+<td><code>renderer.Renderer</code></td>
+<td>This option must be passed before <code>goldmark.WithRendererOptions</code> and <code>goldmark.WithExtensions</code></td>
+</tr>
+<tr>
+<td><code>goldmark.WithParserOptions</code></td>
+<td><code>...parser.Option</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>goldmark.WithRendererOptions</code></td>
+<td><code>...renderer.Option</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>goldmark.WithExtensions</code></td>
+<td><code>...goldmark.Extender</code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2>Parser and Renderer options</h2>
+<h3>Parser options</h3>
+<table>
+<thead>
+<tr>
+<th>Functional option</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>parser.WithBlockParsers</code></td>
+<td>A <code>util.PrioritizedSlice</code> whose elements are <code>parser.BlockParser</code></td>
+<td>Parsers for parsing block level elements.</td>
+</tr>
+<tr>
+<td><code>parser.WithInlineParsers</code></td>
+<td>A <code>util.PrioritizedSlice</code> whose elements are <code>parser.InlineParser</code></td>
+<td>Parsers for parsing inline level elements.</td>
+</tr>
+<tr>
+<td><code>parser.WithParagraphTransformers</code></td>
+<td>A <code>util.PrioritizedSlice</code> whose elements are <code>parser.ParagraphTransformer</code></td>
+<td>Transformers for transforming paragraph nodes.</td>
+</tr>
+<tr>
+<td><code>parser.WithASTTransformers</code></td>
+<td>A <code>util.PrioritizedSlice</code> whose elements are <code>parser.ASTTransformer</code></td>
+<td>Transformers for transforming an AST.</td>
+</tr>
+<tr>
+<td><code>parser.WithAutoHeadingID</code></td>
+<td><code>-</code></td>
+<td>Enables auto heading ids.</td>
+</tr>
+<tr>
+<td><code>parser.WithAttribute</code></td>
+<td><code>-</code></td>
+<td>Enables custom attributes. Currently only headings supports attributes.</td>
+</tr>
+</tbody>
+</table>
+<h3>HTML Renderer options</h3>
+<table>
+<thead>
+<tr>
+<th>Functional option</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>html.WithWriter</code></td>
+<td><code>html.Writer</code></td>
+<td><code>html.Writer</code> for writing contents to an <code>io.Writer</code>.</td>
+</tr>
+<tr>
+<td><code>html.WithHardWraps</code></td>
+<td><code>-</code></td>
+<td>Render newlines as <code>&lt;br&gt;</code>.</td>
+</tr>
+<tr>
+<td><code>html.WithXHTML</code></td>
+<td><code>-</code></td>
+<td>Render as XHTML.</td>
+</tr>
+<tr>
+<td><code>html.WithUnsafe</code></td>
+<td><code>-</code></td>
+<td>By default, goldmark does not render raw HTML or potentially dangerous links. With this option, goldmark renders such content as written.</td>
+</tr>
+</tbody>
+</table>
+<h3>Built-in extensions</h3>
+<ul>
+<li><code>extension.Table</code>
+<ul>
+<li><a href="https://github.github.com/gfm/#tables-extension-">GitHub Flavored Markdown: Tables</a></li>
+</ul>
+</li>
+<li><code>extension.Strikethrough</code>
+<ul>
+<li><a href="https://github.github.com/gfm/#strikethrough-extension-">GitHub Flavored Markdown: Strikethrough</a></li>
+</ul>
+</li>
+<li><code>extension.Linkify</code>
+<ul>
+<li><a href="https://github.github.com/gfm/#autolinks-extension-">GitHub Flavored Markdown: Autolinks</a></li>
+</ul>
+</li>
+<li><code>extension.TaskList</code>
+<ul>
+<li><a href="https://github.github.com/gfm/#task-list-items-extension-">GitHub Flavored Markdown: Task list items</a></li>
+</ul>
+</li>
+<li><code>extension.GFM</code>
+<ul>
+<li>This extension enables Table, Strikethrough, Linkify and TaskList.</li>
+<li>This extension does not filter tags defined in <a href="https://github.github.com/gfm/#disallowed-raw-html-extension-">6.11: Disallowed Raw HTML (extension)</a>.
+If you need to filter HTML tags, see <a href="#security">Security</a>.</li>
+<li>If you need to parse github emojis, you can use <a href="https://github.com/yuin/goldmark-emoji">goldmark-emoji</a> extension.</li>
+</ul>
+</li>
+<li><code>extension.DefinitionList</code>
+<ul>
+<li><a href="https://michelf.ca/projects/php-markdown/extra/#def-list">PHP Markdown Extra: Definition lists</a></li>
+</ul>
+</li>
+<li><code>extension.Footnote</code>
+<ul>
+<li><a href="https://michelf.ca/projects/php-markdown/extra/#footnotes">PHP Markdown Extra: Footnotes</a></li>
+</ul>
+</li>
+<li><code>extension.Typographer</code>
+<ul>
+<li>This extension substitutes punctuations with typographic entities like <a href="https://daringfireball.net/projects/smartypants/">smartypants</a>.</li>
+</ul>
+</li>
+<li><code>extension.CJK</code>
+<ul>
+<li>This extension is a shortcut for CJK related functionalities.</li>
+</ul>
+</li>
+</ul>
+<h3>Attributes</h3>
+<p>The <code>parser.WithAttribute</code> option allows you to define attributes on some elements.</p>
+<p>Currently only headings support attributes.</p>
+<p><strong>Attributes are being discussed in the
+<a href="https://talk.commonmark.org/t/consistent-attribute-syntax/272">CommonMark forum</a>.
+This syntax may possibly change in the future.</strong></p>
+<h4>Headings</h4>
+<pre><code>## heading ## {#id .className attrName=attrValue class=&quot;class1 class2&quot;}
+
+## heading {#id .className attrName=attrValue class=&quot;class1 class2&quot;}
+</code></pre>
+<pre><code>heading {#id .className attrName=attrValue}
+============
+</code></pre>
+<h3>Table extension</h3>
+<p>The Table extension implements <a href="https://github.github.com/gfm/#tables-extension-">Table(extension)</a>, as
+defined in <a href="https://github.github.com/gfm/">GitHub Flavored Markdown Spec</a>.</p>
+<p>Specs are defined for XHTML, so specs use some deprecated attributes for HTML5.</p>
+<p>You can override alignment rendering method via options.</p>
+<table>
+<thead>
+<tr>
+<th>Functional option</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>extension.WithTableCellAlignMethod</code></td>
+<td><code>extension.TableCellAlignMethod</code></td>
+<td>Option indicates how are table cells aligned.</td>
+</tr>
+</tbody>
+</table>
+<h3>Typographer extension</h3>
+<p>The Typographer extension translates plain ASCII punctuation characters into typographic-punctuation HTML entities.</p>
+<p>Default substitutions are:</p>
+<table>
+<thead>
+<tr>
+<th>Punctuation</th>
+<th>Default entity</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>'</code></td>
+<td><code>&amp;lsquo;</code>, <code>&amp;rsquo;</code></td>
+</tr>
+<tr>
+<td><code>&quot;</code></td>
+<td><code>&amp;ldquo;</code>, <code>&amp;rdquo;</code></td>
+</tr>
+<tr>
+<td><code>--</code></td>
+<td><code>&amp;ndash;</code></td>
+</tr>
+<tr>
+<td><code>---</code></td>
+<td><code>&amp;mdash;</code></td>
+</tr>
+<tr>
+<td><code>...</code></td>
+<td><code>&amp;hellip;</code></td>
+</tr>
+<tr>
+<td><code>&lt;&lt;</code></td>
+<td><code>&amp;laquo;</code></td>
+</tr>
+<tr>
+<td><code>&gt;&gt;</code></td>
+<td><code>&amp;raquo;</code></td>
+</tr>
+</tbody>
+</table>
+<p>You can override the default substitutions via <code>extensions.WithTypographicSubstitutions</code>:</p>
+<pre style="color:#2f1e2e;background-color:#e7e9db;"><code><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#06b6ef">markdown</span> <span style="color:#5bc4bf">:=</span> <span style="color:#06b6ef">goldmark</span>.<span style="color:#06b6ef">New</span>(
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>    <span style="color:#06b6ef">goldmark</span>.<span style="color:#06b6ef">WithExtensions</span>(
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>        <span style="color:#06b6ef">extension</span>.<span style="color:#06b6ef">NewTypographer</span>(
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>            <span style="color:#06b6ef">extension</span>.<span style="color:#06b6ef">WithTypographicSubstitutions</span>(<span style="color:#06b6ef">extension</span>.<span style="color:#06b6ef">TypographicSubstitutions</span>{
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>                <span style="color:#06b6ef">extension</span>.<span style="color:#06b6ef">LeftSingleQuote</span>:  []byte(<span style="color:#48b685">&#34;&amp;sbquo;&#34;</span>),
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>                <span style="color:#06b6ef">extension</span>.<span style="color:#06b6ef">RightSingleQuote</span>: <span style="color:#815ba4">nil</span>, <span style="color:#8d8687">// nil disables a substitution
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span><span style="color:#8d8687"></span>            }),
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>        ),
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>    ),
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>)
+</span></span></code></pre><h3>Linkify extension</h3>
+<p>The Linkify extension implements <a href="https://github.github.com/gfm/#autolinks-extension-">Autolinks(extension)</a>, as
+defined in <a href="https://github.github.com/gfm/">GitHub Flavored Markdown Spec</a>.</p>
+<p>Since the spec does not define details about URLs, there are numerous ambiguous cases.</p>
+<p>You can override autolinking patterns via options.</p>
+<table>
+<thead>
+<tr>
+<th>Functional option</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>extension.WithLinkifyAllowedProtocols</code></td>
+<td><code>[][]byte | []string</code></td>
+<td>List of allowed protocols such as <code>[]string{ &quot;http:&quot; }</code></td>
+</tr>
+<tr>
+<td><code>extension.WithLinkifyURLRegexp</code></td>
+<td><code>*regexp.Regexp</code></td>
+<td>Regexp that defines URLs, including protocols</td>
+</tr>
+<tr>
+<td><code>extension.WithLinkifyWWWRegexp</code></td>
+<td><code>*regexp.Regexp</code></td>
+<td>Regexp that defines URL starting with <code>www.</code>. This pattern corresponds to <a href="https://github.github.com/gfm/#extended-www-autolink">the extended www autolink</a></td>
+</tr>
+<tr>
+<td><code>extension.WithLinkifyEmailRegexp</code></td>
+<td><code>*regexp.Regexp</code></td>
+<td>Regexp that defines email addresses`</td>
+</tr>
+</tbody>
+</table>
+<p>Example, using <a href="https://github.com/mvdan/xurls">xurls</a>:</p>
+<pre style="color:#2f1e2e;background-color:#e7e9db;"><code><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#5bc4bf">import</span> <span style="color:#48b685">&#34;mvdan.cc/xurls/v2&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span><span style="color:#06b6ef">markdown</span> <span style="color:#5bc4bf">:=</span> <span style="color:#06b6ef">goldmark</span>.<span style="color:#06b6ef">New</span>(
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>    <span style="color:#06b6ef">goldmark</span>.<span style="color:#06b6ef">WithRendererOptions</span>(
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>        <span style="color:#06b6ef">html</span>.<span style="color:#06b6ef">WithXHTML</span>(),
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>        <span style="color:#06b6ef">html</span>.<span style="color:#06b6ef">WithUnsafe</span>(),
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>    ),
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>    <span style="color:#06b6ef">goldmark</span>.<span style="color:#06b6ef">WithExtensions</span>(
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>        <span style="color:#06b6ef">extension</span>.<span style="color:#06b6ef">NewLinkify</span>(
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>            <span style="color:#06b6ef">extension</span>.<span style="color:#06b6ef">WithLinkifyAllowedProtocols</span>([]<span style="color:#fec418">string</span>{
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>                <span style="color:#48b685">&#34;http:&#34;</span>,
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>                <span style="color:#48b685">&#34;https:&#34;</span>,
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>            }),
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>            <span style="color:#06b6ef">extension</span>.<span style="color:#06b6ef">WithLinkifyURLRegexp</span>(
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>                <span style="color:#06b6ef">xurls</span>.<span style="color:#06b6ef">Strict</span>,
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>            ),
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span>        ),
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span>    ),
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span>)
+</span></span></code></pre><h3>Footnotes extension</h3>
+<p>The Footnote extension implements <a href="https://michelf.ca/projects/php-markdown/extra/#footnotes">PHP Markdown Extra: Footnotes</a>.</p>
+<p>This extension has some options:</p>
+<table>
+<thead>
+<tr>
+<th>Functional option</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>extension.WithFootnoteIDPrefix</code></td>
+<td><code>[]byte | string</code></td>
+<td>a prefix for the id attributes.</td>
+</tr>
+<tr>
+<td><code>extension.WithFootnoteIDPrefixFunction</code></td>
+<td><code>func(gast.Node) []byte</code></td>
+<td>a function that determines the id attribute for given Node.</td>
+</tr>
+<tr>
+<td><code>extension.WithFootnoteLinkTitle</code></td>
+<td><code>[]byte | string</code></td>
+<td>an optional title attribute for footnote links.</td>
+</tr>
+<tr>
+<td><code>extension.WithFootnoteBacklinkTitle</code></td>
+<td><code>[]byte | string</code></td>
+<td>an optional title attribute for footnote backlinks.</td>
+</tr>
+<tr>
+<td><code>extension.WithFootnoteLinkClass</code></td>
+<td><code>[]byte | string</code></td>
+<td>a class for footnote links. This defaults to <code>footnote-ref</code>.</td>
+</tr>
+<tr>
+<td><code>extension.WithFootnoteBacklinkClass</code></td>
+<td><code>[]byte | string</code></td>
+<td>a class for footnote backlinks. This defaults to <code>footnote-backref</code>.</td>
+</tr>
+<tr>
+<td><code>extension.WithFootnoteBacklinkHTML</code></td>
+<td><code>[]byte | string</code></td>
+<td>a class for footnote backlinks. This defaults to <code>&amp;#x21a9;&amp;#xfe0e;</code>.</td>
+</tr>
+</tbody>
+</table>
+<p>Some options can have special substitutions. Occurrences of “^^” in the string will be replaced by the corresponding footnote number in the HTML output. Occurrences of “%%” will be replaced by a number for the reference (footnotes can have multiple references).</p>
+<p><code>extension.WithFootnoteIDPrefix</code> and <code>extension.WithFootnoteIDPrefixFunction</code> are useful if you have multiple Markdown documents displayed inside one HTML document to avoid footnote ids to clash each other.</p>
+<p><code>extension.WithFootnoteIDPrefix</code> sets fixed id prefix, so you may write codes like the following:</p>
+<pre style="color:#2f1e2e;background-color:#e7e9db;"><code><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#815ba4">for</span> <span style="color:#06b6ef">_</span>, <span style="color:#06b6ef">path</span> <span style="color:#5bc4bf">:=</span> <span style="color:#815ba4">range</span> <span style="color:#06b6ef">files</span> {
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>    <span style="color:#06b6ef">source</span> <span style="color:#5bc4bf">:=</span> <span style="color:#06b6ef">readAll</span>(<span style="color:#06b6ef">path</span>)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>    <span style="color:#06b6ef">prefix</span> <span style="color:#5bc4bf">:=</span> <span style="color:#06b6ef">getPrefix</span>(<span style="color:#06b6ef">path</span>)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>    <span style="color:#06b6ef">markdown</span> <span style="color:#5bc4bf">:=</span> <span style="color:#06b6ef">goldmark</span>.<span style="color:#06b6ef">New</span>(
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>        <span style="color:#06b6ef">goldmark</span>.<span style="color:#06b6ef">WithExtensions</span>(
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>            <span style="color:#06b6ef">NewFootnote</span>(
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>                <span style="color:#06b6ef">WithFootnoteIDPrefix</span>(<span style="color:#06b6ef">path</span>),
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>            ),
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>        ),
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>    )
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>    <span style="color:#815ba4">var</span> <span style="color:#06b6ef">b</span> <span style="color:#06b6ef">bytes</span>.<span style="color:#06b6ef">Buffer</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>    <span style="color:#06b6ef">err</span> <span style="color:#5bc4bf">:=</span> <span style="color:#06b6ef">markdown</span>.<span style="color:#06b6ef">Convert</span>(<span style="color:#06b6ef">source</span>, <span style="color:#5bc4bf">&amp;</span><span style="color:#06b6ef">b</span>)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>    <span style="color:#815ba4">if</span> <span style="color:#06b6ef">err</span> <span style="color:#5bc4bf">!=</span> <span style="color:#815ba4">nil</span> {
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>        <span style="color:#06b6ef">t</span>.<span style="color:#06b6ef">Error</span>(<span style="color:#06b6ef">err</span>.<span style="color:#06b6ef">Error</span>())
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>    }
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span>}
+</span></span></code></pre><p><code>extension.WithFootnoteIDPrefixFunction</code> determines an id prefix by calling given function, so you may write codes like the following:</p>
+<pre style="color:#2f1e2e;background-color:#e7e9db;"><code><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#06b6ef">markdown</span> <span style="color:#5bc4bf">:=</span> <span style="color:#06b6ef">goldmark</span>.<span style="color:#06b6ef">New</span>(
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>    <span style="color:#06b6ef">goldmark</span>.<span style="color:#06b6ef">WithExtensions</span>(
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>        <span style="color:#06b6ef">NewFootnote</span>(
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>                <span style="color:#06b6ef">WithFootnoteIDPrefixFunction</span>(<span style="color:#815ba4">func</span>(<span style="color:#06b6ef">n</span> <span style="color:#06b6ef">gast</span>.<span style="color:#06b6ef">Node</span>) []<span style="color:#fec418">byte</span> {
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>                    <span style="color:#06b6ef">v</span>, <span style="color:#06b6ef">ok</span> <span style="color:#5bc4bf">:=</span> <span style="color:#06b6ef">n</span>.<span style="color:#06b6ef">OwnerDocument</span>().<span style="color:#06b6ef">Meta</span>()[<span style="color:#48b685">&#34;footnote-prefix&#34;</span>]
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>                    <span style="color:#815ba4">if</span> <span style="color:#06b6ef">ok</span> {
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>                        <span style="color:#815ba4">return</span> <span style="color:#06b6ef">util</span>.<span style="color:#06b6ef">StringToReadOnlyBytes</span>(<span style="color:#06b6ef">v</span>.(<span style="color:#fec418">string</span>))
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>                    }
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>                    <span style="color:#815ba4">return</span> <span style="color:#815ba4">nil</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>                }),
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>        ),
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>    ),
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span><span style="color:#815ba4">for</span> <span style="color:#06b6ef">_</span>, <span style="color:#06b6ef">path</span> <span style="color:#5bc4bf">:=</span> <span style="color:#815ba4">range</span> <span style="color:#06b6ef">files</span> {
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>    <span style="color:#06b6ef">source</span> <span style="color:#5bc4bf">:=</span> <span style="color:#06b6ef">readAll</span>(<span style="color:#06b6ef">path</span>)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span>    <span style="color:#815ba4">var</span> <span style="color:#06b6ef">b</span> <span style="color:#06b6ef">bytes</span>.<span style="color:#06b6ef">Buffer</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span>    <span style="color:#06b6ef">doc</span> <span style="color:#5bc4bf">:=</span> <span style="color:#06b6ef">markdown</span>.<span style="color:#06b6ef">Parser</span>().<span style="color:#06b6ef">Parse</span>(<span style="color:#06b6ef">text</span>.<span style="color:#06b6ef">NewReader</span>(<span style="color:#06b6ef">source</span>))
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span><span>    <span style="color:#06b6ef">doc</span>.<span style="color:#06b6ef">Meta</span>()[<span style="color:#48b685">&#34;footnote-prefix&#34;</span>] = <span style="color:#06b6ef">getPrefix</span>(<span style="color:#06b6ef">path</span>)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span><span>    <span style="color:#06b6ef">err</span> <span style="color:#5bc4bf">:=</span> <span style="color:#06b6ef">markdown</span>.<span style="color:#06b6ef">Renderer</span>().<span style="color:#06b6ef">Render</span>(<span style="color:#5bc4bf">&amp;</span><span style="color:#06b6ef">b</span>, <span style="color:#06b6ef">source</span>, <span style="color:#06b6ef">doc</span>)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span><span>}
+</span></span></code></pre><p>You can use <a href="https://github.com/yuin/goldmark-meta">goldmark-meta</a> to define a id prefix in the markdown document:</p>
+<pre style="color:#2f1e2e;background-color:#e7e9db;"><code><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>---
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>title: document title
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>slug: article1
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>footnote-prefix: article1
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>---
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span><span style="font-weight:bold"># My article
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8</span><span><span style="font-weight:bold"></span>
+</span></span></code></pre><h3>CJK extension</h3>
+<p>CommonMark gives compatibilities a high priority and original markdown was designed by westerners. So CommonMark lacks considerations for languages like CJK.</p>
+<p>This extension provides additional options for CJK users.</p>
+<table>
+<thead>
+<tr>
+<th>Functional option</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>extension.WithEastAsianLineBreaks</code></td>
+<td><code>...extension.EastAsianLineBreaksStyle</code></td>
+<td>Soft line breaks are rendered as a newline. Some asian users will see it as an unnecessary space. With this option, soft line breaks between east asian wide characters will be ignored. This defaults to <code>EastAsianLineBreaksStyleSimple</code>.</td>
+</tr>
+<tr>
+<td><code>extension.WithEscapedSpace</code></td>
+<td><code>-</code></td>
+<td>Without spaces around an emphasis started with east asian punctuations, it is not interpreted as an emphasis(as defined in CommonMark spec). With this option, you can avoid this inconvenient behavior by putting 'not rendered' spaces around an emphasis like <code>太郎は\ **「こんにちわ」**\ といった</code>.</td>
+</tr>
+</tbody>
+</table>
+<h4>Styles of Line Breaking</h4>
+<table>
+<thead>
+<tr>
+<th>Style</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>EastAsianLineBreaksStyleSimple</code></td>
+<td>Soft line breaks are ignored if both sides of the break are east asian wide character. This behavior is the same as <a href="https://pandoc.org/MANUAL.html#extension-east_asian_line_breaks"><code>east_asian_line_breaks</code></a> in Pandoc.</td>
+</tr>
+<tr>
+<td><code>EastAsianLineBreaksCSS3Draft</code></td>
+<td>This option implements CSS text level3 <a href="https://drafts.csswg.org/css-text-3/#line-break-transform">Segment Break Transformation Rules</a> with <a href="https://github.com/w3c/csswg-drafts/issues/5086">some enhancements</a>.</td>
+</tr>
+</tbody>
+</table>
+<h4>Example of <code>EastAsianLineBreaksStyleSimple</code></h4>
+<p>Input Markdown:</p>
+<pre style="color:#2f1e2e;background-color:#e7e9db;"><code><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>私はプログラマーです。
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>東京の会社に勤めています。
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>GoでWebアプリケーションを開発しています。
+</span></span></code></pre><p>Output:</p>
+<pre style="color:#2f1e2e;background-color:#e7e9db;"><code><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>&lt;<span style="color:#5bc4bf">p</span>&gt;私はプログラマーです。東京の会社に勤めています。\nGoでWebアプリケーションを開発しています。&lt;/<span style="color:#5bc4bf">p</span>&gt;
+</span></span></code></pre><h4>Example of <code>EastAsianLineBreaksCSS3Draft</code></h4>
+<p>Input Markdown:</p>
+<pre style="color:#2f1e2e;background-color:#e7e9db;"><code><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>私はプログラマーです。
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>東京の会社に勤めています。
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>GoでWebアプリケーションを開発しています。
+</span></span></code></pre><p>Output:</p>
+<pre style="color:#2f1e2e;background-color:#e7e9db;"><code><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>&lt;<span style="color:#5bc4bf">p</span>&gt;私はプログラマーです。東京の会社に勤めています。GoでWebアプリケーションを開発しています。&lt;/<span style="color:#5bc4bf">p</span>&gt;
+</span></span></code></pre><h2>Security</h2>
+<p>By default, goldmark does not render raw HTML or potentially-dangerous URLs.
+If you need to gain more control over untrusted contents, it is recommended that you
+use an HTML sanitizer such as <a href="https://github.com/microcosm-cc/bluemonday">bluemonday</a>.</p>
+<h2>Benchmark</h2>
+<p>You can run this benchmark in the <code>_benchmark</code> directory.</p>
+<h3>against other golang libraries</h3>
+<p>blackfriday v2 seems to be the fastest, but as it is not CommonMark compliant, its performance cannot be directly compared to that of the CommonMark-compliant libraries.</p>
+<p>goldmark, meanwhile, builds a clean, extensible AST structure, achieves full compliance with
+CommonMark, and consumes less memory, all while being reasonably fast.</p>
+<ul>
+<li>MBP 2019 13″(i5, 16GB), Go1.17</li>
+</ul>
+<pre><code>BenchmarkMarkdown/Blackfriday-v2-8                   302           3743747 ns/op         3290445 B/op      20050 allocs/op
+BenchmarkMarkdown/GoldMark-8                         280           4200974 ns/op         2559738 B/op      13435 allocs/op
+BenchmarkMarkdown/CommonMark-8                       226           5283686 ns/op         2702490 B/op      20792 allocs/op
+BenchmarkMarkdown/Lute-8                              12          92652857 ns/op        10602649 B/op      40555 allocs/op
+BenchmarkMarkdown/GoMarkdown-8                        13          81380167 ns/op         2245002 B/op      22889 allocs/op
+</code></pre>
+<h3>against cmark (CommonMark reference implementation written in C)</h3>
+<ul>
+<li>MBP 2019 13″(i5, 16GB), Go1.17</li>
+</ul>
+<pre><code>----------- cmark -----------
+file: _data.md
+iteration: 50
+average: 0.0044073057 sec
+------- goldmark -------
+file: _data.md
+iteration: 50
+average: 0.0041611990 sec
+</code></pre>
+<p>As you can see, goldmark's performance is on par with cmark's.</p>
+<h2>Extensions</h2>
+<h3>List of extensions</h3>
+<ul>
+<li><a href="https://github.com/yuin/goldmark-meta">goldmark-meta</a>: A YAML metadata
+extension for the goldmark Markdown parser.</li>
+<li><a href="https://github.com/yuin/goldmark-highlighting">goldmark-highlighting</a>: A syntax-highlighting extension
+for the goldmark markdown parser.</li>
+<li><a href="https://github.com/yuin/goldmark-emoji">goldmark-emoji</a>: An emoji
+extension for the goldmark Markdown parser.</li>
+<li><a href="https://github.com/litao91/goldmark-mathjax">goldmark-mathjax</a>: Mathjax support for the goldmark markdown parser</li>
+<li><a href="https://github.com/stephenafamo/goldmark-pdf">goldmark-pdf</a>: A PDF renderer that can be passed to <code>goldmark.WithRenderer()</code>.</li>
+<li><a href="https://github.com/abhinav/goldmark-hashtag">goldmark-hashtag</a>: Adds support for <code>#hashtag</code>-based tagging to goldmark.</li>
+<li><a href="https://github.com/abhinav/goldmark-wikilink">goldmark-wikilink</a>: Adds support for <code>[[wiki]]</code>-style links to goldmark.</li>
+<li><a href="https://github.com/abhinav/goldmark-anchor">goldmark-anchor</a>: Adds anchors (permalinks) next to all headers in a document.</li>
+<li><a href="https://github.com/mangoumbrella/goldmark-figure">goldmark-figure</a>: Adds support for rendering paragraphs starting with an image to <code>&lt;figure&gt;</code> elements.</li>
+<li><a href="https://github.com/abhinav/goldmark-frontmatter">goldmark-frontmatter</a>: Adds support for YAML, TOML, and custom front matter to documents.</li>
+<li><a href="https://github.com/abhinav/goldmark-toc">goldmark-toc</a>: Adds support for generating tables-of-contents for goldmark documents.</li>
+<li><a href="https://github.com/abhinav/goldmark-mermaid">goldmark-mermaid</a>: Adds support for rendering <a href="https://mermaid-js.github.io/mermaid/">Mermaid</a> diagrams in goldmark documents.</li>
+<li><a href="https://github.com/jchenry/goldmark-pikchr">goldmark-pikchr</a>: Adds support for rendering <a href="https://pikchr.org/home/doc/trunk/homepage.md">Pikchr</a> diagrams in goldmark documents.</li>
+<li><a href="https://github.com/13rac1/goldmark-embed">goldmark-embed</a>: Adds support for rendering embeds from YouTube links.</li>
+<li><a href="https://github.com/soypat/goldmark-latex">goldmark-latex</a>: A $\LaTeX$ renderer that can be passed to <code>goldmark.WithRenderer()</code>.</li>
+<li><a href="https://github.com/stefanfritsch/goldmark-fences">goldmark-fences</a>: Support for pandoc-style <a href="https://pandoc.org/MANUAL.html#divs-and-spans">fenced divs</a> in goldmark.</li>
+<li><a href="https://github.com/FurqanSoftware/goldmark-d2">goldmark-d2</a>: Adds support for <a href="https://d2lang.com/">D2</a> diagrams.</li>
+<li><a href="https://github.com/FurqanSoftware/goldmark-katex">goldmark-katex</a>: Adds support for <a href="https://katex.org/">KaTeX</a> math and equations.</li>
+<li><a href="https://github.com/tenkoh/goldmark-img64">goldmark-img64</a>: Adds support for embedding images into the document as DataURL (base64 encoded).</li>
+<li><a href="https://github.com/quail-ink/goldmark-enclave">goldmark-enclave</a>: Adds support for embedding youtube/bilibili video, X's <a href="https://publish.twitter.com/">oembed tweet</a>, <a href="https://www.tradingview.com/widget/">tradingview</a>'s chart, <a href="https://quail.ink">quail</a>'s widget into the document.</li>
+<li><a href="https://github.com/movsb/goldmark-wiki-table">goldmark-wiki-table</a>: Adds support for embedding Wiki Tables.</li>
+</ul>
+<h3>Loading extensions at runtime</h3>
+<p><a href="https://github.com/yuin/goldmark-dynamic">goldmark-dynamic</a> allows you to write a goldmark extension in Lua and load it at runtime without re-compilation.</p>
+<p>Please refer to  <a href="https://github.com/yuin/goldmark-dynamic">goldmark-dynamic</a> for details.</p>
+<h2>goldmark internal(for extension developers)</h2>
+<h3>Overview</h3>
+<p>goldmark's Markdown processing is outlined in the diagram below.</p>
+<pre><code>            &lt;Markdown in []byte, parser.Context&gt;
+                           |
+                           V
+            +-------- parser.Parser ---------------------------
+            | 1. Parse block elements into AST
+            |   1. If a parsed block is a paragraph, apply 
+            |      ast.ParagraphTransformer
+            | 2. Traverse AST and parse blocks.
+            |   1. Process delimiters(emphasis) at the end of
+            |      block parsing
+            | 3. Apply parser.ASTTransformers to AST
+                           |
+                           V
+                      &lt;ast.Node&gt;
+                           |
+                           V
+            +------- renderer.Renderer ------------------------
+            | 1. Traverse AST and apply renderer.NodeRenderer
+            |    corespond to the node type
+
+                           |
+                           V
+                        &lt;Output&gt;
+</code></pre>
+<h3>Parsing</h3>
+<p>Markdown documents are read through <code>text.Reader</code> interface.</p>
+<p>AST nodes do not have concrete text. AST nodes have segment information of the documents, represented by <code>text.Segment</code> .</p>
+<p><code>text.Segment</code> has 3 attributes: <code>Start</code>, <code>End</code>, <code>Padding</code> .</p>
+<p>(TBC)</p>
+<p><strong>TODO</strong></p>
+<p>See <code>extension</code> directory for examples of extensions.</p>
+<p>Summary:</p>
+<ol>
+<li>Define AST Node as a struct in which <code>ast.BaseBlock</code> or <code>ast.BaseInline</code> is embedded.</li>
+<li>Write a parser that implements <code>parser.BlockParser</code> or <code>parser.InlineParser</code>.</li>
+<li>Write a renderer that implements <code>renderer.NodeRenderer</code>.</li>
+<li>Define your goldmark extension that implements <code>goldmark.Extender</code>.</li>
+</ol>
+<h2>Donation</h2>
+<p>BTC: 1NEDSyUmo4SMTDP83JJQSWi1MvQUGGNMZB</p>
+<h2>License</h2>
+<p>MIT</p>
+<h2>Author</h2>
+<p>Yusuke Inuzuka</p>
+
+        </div>   
+    </div>
+</body>
+</html>
