@@ -36,13 +36,13 @@ func GenCate(path string, cateHtml string) {
 	tempData, _ := os.ReadFile("resource/template-doc.html")
 
 	listHmml := GenDocs(path, cateHtml)
-	cateHtml = strings.Replace(cateHtml, "../../docs_cate/", "", -1)
+	cateHtml = strings.Replace(cateHtml, "../../docs_list/", "", -1)
 	template := strings.Replace(string(tempData), "../../resource/", "../resource/", -1)
 	template = strings.Replace(template, "{title}", path, -1)
 	template = strings.Replace(template, "{cates}", cateHtml, -1)
 	template = strings.Replace(template, "{content}", listHmml, -1)
 
-	file, _ := os.Create("docs_cate/" + path + ".html")
+	file, _ := os.Create("docs_list/" + path + ".html")
 	defer file.Close()
 	file.WriteString(template)
 
@@ -129,7 +129,7 @@ func GetCateHtml() string {
 
 	var sb strings.Builder
 	for _, v := range cates {
-		sb.WriteString(fmt.Sprintf(`<li><a href="%s">%s</a></li>`, "../../docs_cate/"+v+".html", v))
+		sb.WriteString(fmt.Sprintf(`<li><a href="%s">%s</a></li>`, "../../docs_list/"+v+".html", v))
 	}
 
 	return sb.String()
