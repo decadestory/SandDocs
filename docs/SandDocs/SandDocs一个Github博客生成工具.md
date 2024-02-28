@@ -1,5 +1,7 @@
 # SandDocs一个Github博客生成工具
 
+<!-- SandDocs是一个简单高效的Blog生成工具，在相应文件夹写好markdown文件，一行命令就可以生成博客主页，列表页，文档页 -->
+
 ## 简介
 SandDocs是一个简单高效的Blog生成工具，在相应文件夹写好markdown文件，一行命令就可以生成博客主页，列表页，文档页
 

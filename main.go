@@ -17,8 +17,8 @@ import (
 
 func main() {
 	cateHtml := GetCateHtml()
-	GenDoc("HISTORY/Windows下visual studio code搭建golang开发环境", cateHtml)
 	GenCates(cateHtml)
+	GenIndex("SandDocs/SandDocs一个Github博客生成工具", cateHtml)
 }
 
 func GenCates(cateHtml string) {
@@ -116,6 +116,44 @@ func GenDoc(path string, cateHtml string) (string, string) {
 
 	fmt.Println("end")
 	return title, desc
+}
+
+func GenIndex(path string, cateHtml string) {
+	fmt.Println("start")
+
+	tempData, _ := os.ReadFile("resource/template-doc.html")
+	mdData, _ := os.ReadFile("docs/" + path + ".md")
+
+	// Custom configuration
+	markdown := goldmark.New(
+		goldmark.WithExtensions(extension.Table),
+		goldmark.WithExtensions(
+			highlighting.NewHighlighting(
+				highlighting.WithStyle("paraiso-light"),
+				highlighting.WithFormatOptions(
+					chromahtml.WithLineNumbers(true),
+				),
+			),
+		),
+	)
+
+	var buf bytes.Buffer
+	markdown.Convert(mdData, &buf)
+
+	html := buf.String()
+
+	cateHtml = strings.Replace(cateHtml, "../../docs_list/", "docs_list/", -1)
+	template := strings.Replace(string(tempData), "../../resource/", "resource/", -1)
+
+	template = strings.Replace(template, "{title}", path, -1)
+	template = strings.Replace(template, "{cates}", cateHtml, -1)
+	template = strings.Replace(template, "{content}", html, -1)
+
+	file, _ := os.Create("index.html")
+	defer file.Close()
+	file.WriteString(template)
+
+	fmt.Println("end")
 }
 
 func GetCateHtml() string {
