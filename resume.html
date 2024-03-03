@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>关于/关于JERRY</title>
+    <link rel="stylesheet" href="resource/theme/yuan-shan.css">
+    <link rel="stylesheet" href="resource/css/base.css">
+</head>
+
+<body>
+        <div class="markdow-container" style="left:0;width:60%">
+            <h1>个人简历</h1>
+            <h2>关于我</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="text-align:right">类别</th>
+                        <th style="text-align:left">信息</th>
+                        <th style="text-align:right">类别</th>
+                        <th style="text-align:left">信息</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="text-align:right">姓名</td>
+                        <td style="text-align:left">陈国瑞(男 汉 英文:Jerry)</td>
+                        <td style="text-align:right">出生</td>
+                        <td style="text-align:left">1990-10(江苏)</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:right">教育</td>
+                        <td style="text-align:left">苏州大学(本科)</td>
+                        <td style="text-align:right">联系</td>
+                        <td style="text-align:left">18961156547(728246447@qq.com)</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:right">经验</td>
+                        <td style="text-align:left">10年</td>
+                        <td style="text-align:right">职位</td>
+                        <td style="text-align:left">后端开发(go,java)</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:right">GITHUB</td>
+                        <td style="text-align:left"><a href="https://github.com/decadestory">github.com/decadestory</a>
+                        </td>
+                        <td style="text-align:right">求职</td>
+                        <td style="text-align:left">后端工程师(GO、Golang 上海 35-50K)</td>
+                    </tr>
+                </tbody>
+            </table>
+            <h2>个人优势</h2>
+            <ol start="0">
+                <li>全栈开发，数据库，后端接口，web端，桌面端，移动端（小程序,android,鸿蒙可以快速上手）,运维都可一人搞定。 <!-- raw HTML omitted --></li>
+                <li>逻辑清晰，曾全国编程比赛荣获C语言省三等奖，Java省一等奖、全国三等奖(决赛于北京大学)。 <!-- raw HTML omitted --></li>
+                <li>2012年通过全国软件设计师考试。 <!-- raw HTML omitted --></li>
+                <li>学习能力强，热爱研究新技术，最近在研究RUST和一些AI算法。 <!-- raw HTML omitted --></li>
+                <li>有良好的代码规范(大道至简)，曾在公司分享过如何写出风骚的代码。 <!-- raw HTML omitted --></li>
+                <li>编码能力强，go,java,.net,js都有5年以上工作经验，熟练各种语言主流框架（.netcore,ef,springboot,mybatis,gin,gorm等）
+                    <!-- raw HTML omitted --></li>
+                <li>代码架构能力，golang通用包goutil,.net企业级开发框架，构建java底层pom包以及开发框架。开源c#包orm.son。 <!-- raw HTML omitted --></li>
+                <li>架构师能力，熟练各种数据库mysql,mssql,pgsql,clickhouse,redis等，各种中间件kafka,apisix,nocos,es,mongodb,rbbitmq,nginx,docker,k8s等，熟悉分布式锁，分布式事务，服务器数据优化配置。
+                    <!-- raw HTML omitted --></li>
+                <li>主要成绩,消息中心，配置中心，低代码表单引擎，流程引擎，报表引擎，统一日志平台，分布式异步任务中心，线程控制器，服务器监控中心，接口文档更变对比，sql发布发平台，多语言配置中心，定时调度平台，数据库字典平台，大数据迁移平台，数据同步服务。
+                </li>
+            </ol>
+            <h2>工作经历</h2>
+            <h3>上海正雅齿科科技有限公司</h3>
+            <p><em><strong>技术部|资深java工程师</strong></em></p>
+            <blockquote>
+                <ol start="0">
+                    <li>基础服务开发（基础平台，日志中心，流程中心，异步中心，数据同步，定时调度，id生成器，数据迁移）<!-- raw HTML omitted --></li>
+                    <li>优化技术栈 （中间件选择，查询优化，宽表生成）<!-- raw HTML omitted --></li>
+                    <li>顶替一段运维时间（服务器系统安装，opsdev，代码检查,gitlab,nexus维护，jira安装维护）<!-- raw HTML omitted --></li>
+                </ol>
+            </blockquote>
+            <h4>分布式异步任务平台</h4>
+            <p>分布式异步任务平台负责庞大系统中长时间异步调用，批量处理，文件导出压缩下载，服务负载，线程控制等功能。全部使用go开发，主要分为主节点与若干工作节点，主节点负责消费kafka异步任务的消息、存储消息，任务分配，对外接口提供，excel模板配置，节点监控，策略配置与控制和管理页面等功能，工作节点根据不同的类型，负责实际业务调用，excel生成打包，线程控制，状态进度控制等，工作节点启动通过RPC注册到主节点，主节点通过hash分配任务到相同类型工作节点。
+            </p>
+            <h4>统一日志中心</h4>
+            <p>统一日志中心作为协助开发，查找系统缺陷，解决线上问题，审计等起重要作用，日志中心完全使用golang开发，配合java开发日志sdk收集20多个服务的接口日志，调式日志，错误日志，SQL日志,调用链路，到kafka，数据存储使用clickhouse并通过年月日分区实现了意想不到效果(20亿查询数据查询也很顺畅)，统一日志中心不仅收集各个服务的日志，还收集了数据库更变，服务器日志，调用三方的日志，以及对日志做了基础的分析功能（接口时长，sql时长，接口使用频次,事务检查等）通过requestid可以查出一次请求所有的信息,还是很方便的。
+            </p>
+            <h4>流程中心开发</h4>
+            <p>企业内部系统有很多审核相关工作，流程中心通页面配置审核节点，节点人员及属性，实现指定人，团队，角色，上下级审核，并且实现或签，会签，前后加签自动审核，分支流程，并签，团队人员轮巡，撤销，退回，重启，去重，终止，定时过期，定时通过，人员同步，人员分团队，代办已办列表，模拟执行等20多项功能，并且整个数据库到接口到页面，全是自主开发，并没有用成熟框架
+            </p>
+            <h4>其它主要项目</h4>
+            <ol start="0">
+                <li>mysql数据监听同步：<!-- raw HTML omitted -->
+                    golang开发，通过binlog同步数据更变到kafka,供宽表业务处理， 供日志消费。<!-- raw HTML omitted --></li>
+                <li>数据库字典：<!-- raw HTML omitted -->
+                    golang开发，数据库表结构信息查看搜索，字段问题检查，关系图生成，数据查询等功能。<!-- raw HTML omitted --></li>
+                <li>id生成器：<!-- raw HTML omitted -->
+                    java开发，生成雪花id，带表前缀的雪花id，生成uuid，编码生成，编码配置，生成不重复任务号，特殊编码如（31进制的编码生成）<!-- raw HTML omitted --></li>
+                <li>多语言配置中心:<!-- raw HTML omitted -->
+                    提供给后端和前端语言切换功能，后端生成到redis中，前端提供json文件，语言类型动态配置，导出导入，自动生成编码。<!-- raw HTML omitted --></li>
+                <li>定时调度，sql发布平台：<!-- raw HTML omitted -->
+                    定时调度，就是定时调用接口或执行sql。<!-- raw HTML omitted -->
+                    sql发布平台，就是开发不能操作数据库结构，每个人通过sql平台对数据结构更变，对于不同环境可以一键同步结构。<!-- raw HTML omitted --></li>
+            </ol>
+            <hr>
+            <h3>上海捷箭</h3>
+            <p><em><strong>技术部|架构师</strong></em></p>
+            <blockquote>
+                <ol start="0">
+                    <li>负责10人左右团队架构师<!-- raw HTML omitted --></li>
+                    <li>负责平台基础搭建开发与维护。<!-- raw HTML omitted --></li>
+                    <li>负责欧莱雅3万促销员考勤(上下班打卡，请假，报销，报备，加班等)后台与接口设计开发，分布式部署，数据库维护，系统迁移等，参与访店系统
+                        开发与维护。<!-- raw HTML omitted --></li>
+                    <li>负责爱茉莉SFA系统设计开发，服务器部署上线。<!-- raw HTML omitted --></li>
+                    <li>主导蒙牛访店表单引擎架构搭建与系统开发，促销员系统开发维护。<!-- raw HTML omitted --></li>
+                    <li>主导恒瑞培训系统搭建与开发。<!-- raw HTML omitted --></li>
+                    <li>参与欧莱雅系统微服务转型，开发维护。<!-- raw HTML omitted --></li>
+                </ol>
+            </blockquote>
+            <h4>微服务四大引擎</h4>
+            <p>Java微服务四大引擎（表单引擎，KPI引擎，报表引擎，流程引擎）管理配置开发，表单引擎设计开发，kpi引擎设计分析
+                微服务四大引擎（表单引擎，KPI引擎，报表引擎，流程引擎）是一套完整的低代码平台，通过流程引擎配置业务流程（审核，任务等）关联上表单（已实现组件与逻辑配置与解析），html5根据流程填写表单，填写的数据会通过rocketmq传给kpi引擎进行计算指定的kpi，最终将kpi或数据通过报表引擎导出。
+            </p>
+            <h4>欧莱雅dponline项目</h4>
+            <p>项目分主管端微信排班，审批，领门店，领促销员，ios,android端促销员上下班打卡拍照，请假，报备，加班，查岗，报数等，后台接口，web端管理页面，报表等</p>
+            <h4>恒瑞医药培训项目</h4>
+            <p>后台管理系统，权限管理，老师管理，学员管理，课程管理，计划管理，执行管理，配置中心
+                项目简介：恒瑞总部分派培训到各医院，根据计划给医师们做培训，培训需要录制视频，培训后需要考试，老师给医师评分，系统负责给老师排计划，老师执行完，上传录制的视频，下发考卷，老师打分。
+                全栈开发一人负责所有需求，开发，测试，部署，动态表单配置计划与执行。</p>
+            <h4>爱茉莉SFA系统</h4>
+            <p>爱茉莉SFA系统是一个为爱茉莉旗下诸多品牌访店员跑店所做的系统，访店人不同的岗位需要填写不同的内容，例如进出店打卡，报销量，柜台陈列信息，是否缺货，竞品信息等等.
+                后台显示与手机端使用表格填写模板，服务端接口实现组件化，后台管理页面使用vuejs改版，代替之前angularjs，实现前端组件化</p>
+            <hr>
+            <h3>拍拍贷</h3>
+            <p><em><strong>技术部|高级开发工程师</strong></em></p>
+            <blockquote>
+                <ol start="0">
+                    <li>核心借贷还贷款服务，维护新功能添加<!-- raw HTML omitted --></li>
+                    <li>业务配置功能前后端开发<!-- raw HTML omitted --></li>
+                    <li>业务分析，团队配合等工作<!-- raw HTML omitted --></li>
+                </ol>
+            </blockquote>
+            <h4>借贷还贷系统</h4>
+            <p>核心借贷还贷款服务，维护新功能添加</p>
+            <hr>
+            <h3>爱代驾</h3>
+            <p><em><strong>技术部|.Net开发架构师</strong></em></p>
+            <blockquote>
+                <ol start="0">
+                    <li>参与soa基础平台搭建，前端框架搭建优化<!-- raw HTML omitted --></li>
+                    <li>负责soa日志服务开发<!-- raw HTML omitted --></li>
+                    <li>负责司机招聘系统设计优化与实现，招聘官网开发<!-- raw HTML omitted --></li>
+                    <li>负责快速开发框架设计实现<!-- raw HTML omitted --></li>
+                    <li>负责风险控制防刷单模块设计开发<!-- raw HTML omitted --></li>
+                </ol>
+            </blockquote>
+            <h4>爱代驾司机招聘</h4>
+            <p>司机招聘系统包括前台后共五个小项目，功能迭代了一年。是对外进行招聘司机的主要渠道，系统完成后，得到了业务方一致好评。
+                后台管理系统，权限分配，pc端官网开发，h5端官网开发，微信上传图片（司机头像，身份证，驾照上传），司机试车审核H5</p>
+            <h4>后台框架SOA搭建</h4>
+            <p>统一日志数据库建立，功能开发，维护。 项目简介： 后台SOA 包括ESB、统一登录、统一日志、定时Job、基础配置 开发目的：统一接口调用，安全，解耦等
+                负责统一日志开发</p>
+            <h4>爱代驾风控资金审核</h4>
+            <p>审核司机是否刷单，对司机账户金额增减操作 项目简介： 根据活动订单的时间，公里数等信息，判断此订单是否存在刷单行为。如果有，审核不通过，扣除优惠金额，如果没有刷单，则审核通过，将活动收入，转正现金账户里。
+                负责需求对接，开发，维护</p>
+            <hr>
+            <h3>上海易溯科技有限公司</h3>
+            <p><em><strong>技术部|软件工程师</strong></em></p>
+            <blockquote>
+                <ol start="0">
+                    <li>参与君乐宝物流sap系统模块<!-- raw HTML omitted --></li>
+                    <li>负责君乐宝积分商城系统开发<!-- raw HTML omitted --></li>
+                    <li>负责君乐宝微信积分H5微网站开发<!-- raw HTML omitted --></li>
+                    <li>参数基础框架搭建优化<!-- raw HTML omitted --></li>
+                </ol>
+            </blockquote>
+            <h4>君乐宝产品积分系统</h4>
+            <p>君乐宝产品积分系统是为使用了企业级的ORM框架为君乐宝企业做的积分商城系统，系统分为会员部后台，门店后台，门店手机app，会员微信微网站，会员app，积分商城等项目，会员通过门店购买商品获得积分，获得的积分可以在积分商城中兑换礼产，此系统中也加进了上一个达能饮料产品追溯系统的功能。
+                负责项目中，手机app接口开发，积分规则分析设计与编码、会员微信网站开发、积分商城搜索等功能</p>
+            <h4>达能饮料产品追溯系统</h4>
+            <p>达能饮料产品追溯系统是使用了企业级的ORM框架为达能企业产品追溯的系统，包括总部、经销商、门店产品存储管理与产品追溯的完整系统。
+                项目中负责不同单据类型的导入处理，产品流向生成业务逻辑分析和编码。</p>
+            <hr>
+            <h3>常州万联网络设备有限公司</h3>
+            <p><em><strong>技术部|软件工程师</strong></em></p>
+            <blockquote>
+                <ol start="0">
+                    <li>新网站开发，框架搭建<!-- raw HTML omitted --></li>
+                    <li>负责自媒体verybees网站设计与开发<!-- raw HTML omitted --></li>
+                    <li>负责广告机互联网项目设计开发<!-- raw HTML omitted --></li>
+                    <li>尝试spark，phonegap等技术<!-- raw HTML omitted --></li>
+                </ol>
+            </blockquote>
+            <h4>广告发布平台研究与开发</h4>
+            <p>广告机是一个通过看广告赚流量的平台。注册的广告主通过为自己帐户充值流量，使用流量来发布广告，为广告设置点击分享流量，注册的普通用户通过浏览广告主发布的广告，作相应的操作，如：点击、收藏等可以获得流量，当流量大于30M以上时便可以为指定手机充流量。
+                广告机中，负责项目主要的业务逻辑分析与设计，程序编码。</p>
+            <h4>自媒体发布平台研究开发</h4>
+            <p>自媒体发布平台,通过google地图定位 使用Google Map
+                和百度地图开发出能将图片音乐活动等媒体信息定位在地图上的自媒体发布平台，平台是编译后开源的，提供下载，使用平台源码需要注册站长，站长免费使用1个月，试用期满进行收费。
+                主要负责平台开发分析和程序编码，图片，音乐，视频处理，地图API 技术研究。</p>
+            <h4>乐拍居电子商务网站开发、ERQ电子商务网站开发</h4>
+            <p>乐拍居是一个房产销售的电商网站。ERQ商城是为黑牡丹公司旗下的商城改版。
+                使用MVC+EF 进行部分模块设计开发，主要负责产品对比，帮助中心、收藏、部分购物流的设计与编码。
+                担任部分模块的设计开发</p>
+            <h2>个人网站</h2>
+            <p><a href="http://wxjerry.work">个人网站http://wxjerry.work</a></p>
+
+        </div>
+    </div>
+</body>
+
+</html>
