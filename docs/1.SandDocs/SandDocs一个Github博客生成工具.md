@@ -10,7 +10,7 @@ SandDocs是一个简单高效的Blog生成工具，在相应文件夹写好markd
 ```shell
 git clone https://github.com/decadestory/SandDocs.git
 ```
-
+* 0.打开resource目录里template-doc.html修改头像，作者，Github地址等信息。
 * 1.打开docs目录，再docs里创建一个目录（SandDocs）,创建的SandDocs就是文档Blog分类。
 * 2.在SandDocs目录里面写一个md文件，这个文件就是Blog文档。
 * 3.执行程序生成网站。

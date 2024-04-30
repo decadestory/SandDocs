@@ -29,6 +29,11 @@ body {
     overflow-y: auto;
 }
 
+.markdow-content{
+    max-width: 1200px;
+    margin: auto;
+}
+
 .logo {
     font-size: 36px;
     padding: 10px;
