@@ -10,6 +10,7 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/alecthomas/chroma/v2"
 	chromahtml "github.com/alecthomas/chroma/v2/formatters/html"
 	"github.com/decadestory/goutil/conf"
 	"github.com/duke-git/lancet/v2/slice"
@@ -123,9 +124,12 @@ func GenDoc(path string, cateHtml string) (string, string) {
 		goldmark.WithExtensions(extension.Table),
 		goldmark.WithExtensions(
 			highlighting.NewHighlighting(
-				highlighting.WithStyle("paraiso-light"),
+				highlighting.WithStyle("dracula"),
 				highlighting.WithFormatOptions(
-					chromahtml.WithLineNumbers(true),
+					chromahtml.WithCustomCSS(map[chroma.TokenType]string{
+						chroma.Line:    "padding-left: 10px;display:block;font-family:'Consolas','DejaVu Sans Mono','Bitstream Vera Sans Mono', monospace",
+						chroma.Keyword: "font-style: normal;",
+					}),
 				),
 			),
 		),
@@ -157,9 +161,9 @@ func GenIndex(path string, cateHtml string) {
 		goldmark.WithExtensions(extension.Table),
 		goldmark.WithExtensions(
 			highlighting.NewHighlighting(
-				highlighting.WithStyle("paraiso-light"),
+				highlighting.WithStyle("dracula"),
 				highlighting.WithFormatOptions(
-					chromahtml.WithLineNumbers(true),
+					chromahtml.WithAllClasses(true),
 				),
 			),
 		),
