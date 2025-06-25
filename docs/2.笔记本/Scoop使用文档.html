@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2.笔记本/Scoop使用文档</title>
+    <link rel="stylesheet" href="../../resource/theme/yuan-shan.css">
+    <link rel="stylesheet" href="../../resource/css/base.css">
+</head>
+<body>
+    <div class="markdow">
+        <div class="markdow-list">
+             <div class="header">
+                <img class="logo" src="../../resource/image/logo.jpg"/>
+                <div>JERRY♎<a href="https://github.com/decadestory" target="_blank" >GITHUB</a></div>
+            </div>
+            <div class="type">
+                <ul>
+                    <li><a href="../../docs_list/1.SandDocs.html">SandDocs</a></li><li><a href="../../docs_list/2.笔记本.html">笔记本</a></li><li><a href="../../docs_list/4.HISTORY.html">HISTORY</a></li><li><a href="../../docs_list/5.平衡.html">平衡</a></li><li><a href="../../docs_list/6.一些小诗.html">一些小诗</a></li><li><a href="../../docs_list/7.关于JERRY.html">关于JERRY</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="markdow-container">
+            <div class="markdow-content">
+                <h1>Scoop使用文档(windows)</h1>
+<!-- raw HTML omitted -->
+<h2>1.安装Scoop (可能需要梯子)</h2>
+<pre style="color:#f8f8f2;background-color:#282a36;"><code><span style="display:flex;padding-left:10px;display:block;font-family:'Consolas','DejaVu Sans Mono','Bitstream Vera Sans Mono', monospace"><span><span style="color:#50fa7b">Set-ExecutionPolicy</span> <span style="color:#50fa7b">-ExecutionPolicy</span> <span style="color:#50fa7b">RemoteSigned</span> <span style="color:#50fa7b">-Scope</span> <span style="color:#50fa7b">CurrentUser</span>
+</span></span><span style="display:flex;padding-left:10px;display:block;font-family:'Consolas','DejaVu Sans Mono','Bitstream Vera Sans Mono', monospace"><span><span style="color:#50fa7b">Invoke-RestMethod</span> <span style="color:#50fa7b">-Uri</span> <span style="color:#50fa7b">https:</span>/<span style="color:#8be9fd;font-style:italic">/get.scoop.sh</span> <span style="color:#50fa7b">|</span> <span style="color:#50fa7b">Invoke-Expression</span>
+</span></span></code></pre><h2>2.添加bucket extras</h2>
+<pre style="color:#f8f8f2;background-color:#282a36;"><code><span style="display:flex;padding-left:10px;display:block;font-family:'Consolas','DejaVu Sans Mono','Bitstream Vera Sans Mono', monospace"><span>scoop bucket add extras
+</span></span></code></pre><h2>3.应用</h2>
+<pre style="color:#f8f8f2;background-color:#282a36;"><code><span style="display:flex;padding-left:10px;display:block;font-family:'Consolas','DejaVu Sans Mono','Bitstream Vera Sans Mono', monospace"><span><span style="color:#6272a4"># 搜索app https://scoop.sh/#/apps</span>
+</span></span><span style="display:flex;padding-left:10px;display:block;font-family:'Consolas','DejaVu Sans Mono','Bitstream Vera Sans Mono', monospace"><span>
+</span></span><span style="display:flex;padding-left:10px;display:block;font-family:'Consolas','DejaVu Sans Mono','Bitstream Vera Sans Mono', monospace"><span><span style="color:#6272a4"># vscode</span>
+</span></span><span style="display:flex;padding-left:10px;display:block;font-family:'Consolas','DejaVu Sans Mono','Bitstream Vera Sans Mono', monospace"><span>scoop install extras/vscode
+</span></span><span style="display:flex;padding-left:10px;display:block;font-family:'Consolas','DejaVu Sans Mono','Bitstream Vera Sans Mono', monospace"><span>
+</span></span><span style="display:flex;padding-left:10px;display:block;font-family:'Consolas','DejaVu Sans Mono','Bitstream Vera Sans Mono', monospace"><span><span style="color:#6272a4"># golang</span>
+</span></span><span style="display:flex;padding-left:10px;display:block;font-family:'Consolas','DejaVu Sans Mono','Bitstream Vera Sans Mono', monospace"><span>scoop install main/go
+</span></span><span style="display:flex;padding-left:10px;display:block;font-family:'Consolas','DejaVu Sans Mono','Bitstream Vera Sans Mono', monospace"><span>
+</span></span><span style="display:flex;padding-left:10px;display:block;font-family:'Consolas','DejaVu Sans Mono','Bitstream Vera Sans Mono', monospace"><span><span style="color:#6272a4"># bun</span>
+</span></span><span style="display:flex;padding-left:10px;display:block;font-family:'Consolas','DejaVu Sans Mono','Bitstream Vera Sans Mono', monospace"><span>scoop install main/bun
+</span></span><span style="display:flex;padding-left:10px;display:block;font-family:'Consolas','DejaVu Sans Mono','Bitstream Vera Sans Mono', monospace"><span>
+</span></span><span style="display:flex;padding-left:10px;display:block;font-family:'Consolas','DejaVu Sans Mono','Bitstream Vera Sans Mono', monospace"><span><span style="color:#6272a4"># chsrc换源工具</span>
+</span></span><span style="display:flex;padding-left:10px;display:block;font-family:'Consolas','DejaVu Sans Mono','Bitstream Vera Sans Mono', monospace"><span>scoop install main/chsrc
+</span></span><span style="display:flex;padding-left:10px;display:block;font-family:'Consolas','DejaVu Sans Mono','Bitstream Vera Sans Mono', monospace"><span>
+</span></span><span style="display:flex;padding-left:10px;display:block;font-family:'Consolas','DejaVu Sans Mono','Bitstream Vera Sans Mono', monospace"><span><span style="color:#6272a4"># 7-zip</span>
+</span></span><span style="display:flex;padding-left:10px;display:block;font-family:'Consolas','DejaVu Sans Mono','Bitstream Vera Sans Mono', monospace"><span>scoop install main/7zip
+</span></span><span style="display:flex;padding-left:10px;display:block;font-family:'Consolas','DejaVu Sans Mono','Bitstream Vera Sans Mono', monospace"><span>
+</span></span></code></pre>
+            </div>
+        </div>   
+    </div>
+</body>
+</html>
