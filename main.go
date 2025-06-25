@@ -35,6 +35,7 @@ type GenInfo struct {
 	ChangeCates     []string
 	ChangeFileNames []string
 	CateHtml        string
+	AllCateHtml     string
 }
 
 func main() {
@@ -43,14 +44,60 @@ func main() {
 	gi.ComputeChangeCates()
 	gi.ComputeChangeFiles()
 	gi.GetCateHtml()
+	gi.GetAllCateHtml()
 	gi.GenCates()
 	gi.GenIndex()
 }
 
+func (gi *GenInfo) GenIndex() {
+	fmt.Println("start")
+	path := conf.Configs.GetString("index_page")
+	tempData, _ := os.ReadFile("resource/template-doc.html")
+	mdData, _ := os.ReadFile("docs/" + path + ".md")
+
+	markdown := goldmark.New(
+		goldmark.WithExtensions(extension.Table),
+		goldmark.WithExtensions(
+			highlighting.NewHighlighting(
+				highlighting.WithStyle("dracula"),
+				highlighting.WithFormatOptions(
+					chromahtml.WithAllClasses(true),
+				),
+			),
+		),
+	)
+
+	var buf bytes.Buffer
+	markdown.Convert(mdData, &buf)
+
+	html := buf.String()
+
+	cateHtml := strings.Replace(gi.AllCateHtml, "../../docs_list/", "docs_list/", -1)
+	template := strings.Replace(string(tempData), "../../resource/", "resource/", -1)
+
+	template = strings.Replace(template, "{title}", path, -1)
+	template = strings.Replace(template, "{cates}", cateHtml, -1)
+	template = strings.Replace(template, "{content}", html, -1)
+
+	file, _ := os.Create("index.html")
+	defer file.Close()
+	file.WriteString(template)
+
+	fmt.Println("end")
+}
+
 func (gi *GenInfo) GenCates() {
-	for _, change := range gi.ChangeCates {
-		gi.GenCate(change)
+
+	if len(gi.Changes) == 0 {
+		return
 	}
+
+	filepath.WalkDir("docs/", func(path string, d fs.DirEntry, err error) error {
+		if d.IsDir() && path != "docs/" {
+			gi.GenCate(filepath.Base(path))
+		}
+		return nil
+	})
 }
 
 func (gi *GenInfo) GenCate(path string) {
@@ -62,7 +109,7 @@ func (gi *GenInfo) GenCate(path string) {
 		return
 	}
 
-	cateHtml := strings.Replace(gi.CateHtml, "../../docs_list/", "", -1)
+	cateHtml := strings.Replace(gi.AllCateHtml, "../../docs_list/", "", -1)
 	template := strings.Replace(string(tempData), "../../resource/", "../resource/", -1)
 	template = strings.Replace(template, "{title}", path, -1)
 	template = strings.Replace(template, "{cates}", cateHtml, -1)
@@ -162,7 +209,7 @@ func (gi *GenInfo) GenDoc(path string) (string, string) {
 
 	html := buf.String()
 	template := strings.Replace(string(tempData), "{title}", path, -1)
-	template = strings.Replace(template, "{cates}", gi.CateHtml, -1)
+	template = strings.Replace(template, "{cates}", gi.AllCateHtml, -1)
 	template = strings.Replace(template, "{content}", html, -1)
 
 	file, _ := os.Create("docs/" + path + ".html")
@@ -171,43 +218,6 @@ func (gi *GenInfo) GenDoc(path string) (string, string) {
 
 	fmt.Println("end")
 	return title, desc
-}
-
-func (gi *GenInfo) GenIndex() {
-	fmt.Println("start")
-	path := conf.Configs.GetString("index_page")
-	tempData, _ := os.ReadFile("resource/template-doc.html")
-	mdData, _ := os.ReadFile("docs/" + path + ".md")
-
-	markdown := goldmark.New(
-		goldmark.WithExtensions(extension.Table),
-		goldmark.WithExtensions(
-			highlighting.NewHighlighting(
-				highlighting.WithStyle("dracula"),
-				highlighting.WithFormatOptions(
-					chromahtml.WithAllClasses(true),
-				),
-			),
-		),
-	)
-
-	var buf bytes.Buffer
-	markdown.Convert(mdData, &buf)
-
-	html := buf.String()
-
-	cateHtml := strings.Replace(gi.CateHtml, "../../docs_list/", "docs_list/", -1)
-	template := strings.Replace(string(tempData), "../../resource/", "resource/", -1)
-
-	template = strings.Replace(template, "{title}", path, -1)
-	template = strings.Replace(template, "{cates}", cateHtml, -1)
-	template = strings.Replace(template, "{content}", html, -1)
-
-	file, _ := os.Create("index.html")
-	defer file.Close()
-	file.WriteString(template)
-
-	fmt.Println("end")
 }
 
 func (gi *GenInfo) GetCateHtml() {
@@ -224,6 +234,31 @@ func (gi *GenInfo) GetCateHtml() {
 	}
 
 	gi.CateHtml = sb.String()
+}
+
+func (gi *GenInfo) GetAllCateHtml() {
+
+	cates := []string{}
+	filepath.WalkDir("docs/", func(path string, d fs.DirEntry, err error) error {
+		if d.IsDir() && path != "docs/" {
+			cates = append(cates, filepath.Base(path))
+		}
+		return nil
+	})
+
+	sort.Strings(cates)
+	var sb strings.Builder
+	for _, v := range cates {
+		idx := strings.IndexByte(v, '.')
+		if idx < 0 {
+			idx = 0
+		} else {
+			idx++
+		}
+		sb.WriteString(fmt.Sprintf(`<li><a href="%s">%s</a></li>`, "../../docs_list/"+v+".html", v[idx:]))
+	}
+
+	gi.AllCateHtml = sb.String()
 }
 
 func (gi *GenInfo) ComputeChanges() {
